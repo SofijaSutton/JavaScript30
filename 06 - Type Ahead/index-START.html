@@ -1,22 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Type Ahead 👀</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<form class="search-form">
+			<input type="text" class="search" placeholder="City or State" />
+			<ul class="suggestions">
+				<li>Filter for a city</li>
+				<li>or a state</li>
+			</ul>
+		</form>
+		<script>
+			const endpoint =
+				"https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+			let inputString = "";
 
-  <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
-    </ul>
-  </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+      //spreading fetchData return values into Array in order to access data w/o calling
+      //fetch every input event (easier for comp)
+      let citiesArr = [];
+      fetchData();
 
-</script>
-</body>
+			//on typing in input field
+			function onInput(e) {
+				if (e.data) {
+					inputString = `${inputString}${e.data}`;
+				} else {
+					inputString = inputString.slice(0, -1);
+				}
+        filterByChar(inputString, citiesArr);
+			}
+			const inputField = document.querySelector(".search");
+			inputField.addEventListener("input", onInput);
+
+			//filters places with input field information
+			function filterByChar(str, citiesArr) {
+				str = str.toLowerCase();
+				let filteredPlaces = citiesArr.filter((place) => {
+					if (place.city.toLowerCase().includes(str) || place.state.toLowerCase().includes(str) ) {
+            return place
+					}
+				});
+				appendPlace(filteredPlaces);
+      }
+
+			function appendPlace(places) {
+				const node = document.querySelector(".suggestions");
+        let children = node.childNodes;
+				while (node.hasChildNodes()) {
+					node.removeChild(node.firstChild);
+				}
+        if (places.length === 1000) {
+          let innerTextArr = ['Filter For A City', 'Or a State'];
+          for (let i =0; i < innerTextArr.length; i++) {
+            const listItem = document.createElement("li");
+            listItem.innerText = innerTextArr[i];
+            node.appendChild(listItem)
+          }
+        } else {
+				places.forEach((place) => {
+					const listItem = document.createElement("li");
+					listItem.innerText = `${place.city} ${place.state} ${place.population}`;
+					node.appendChild(listItem);
+				});
+      }
+			}
+
+			//fetch data from api
+			async function fetchData() {
+				let response = await fetch(endpoint);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status ${response.status}`);
+				}
+				let places = await response.json();
+        citiesArr.push(...places);
+			}
+		</script>
+	</body>
 </html>
