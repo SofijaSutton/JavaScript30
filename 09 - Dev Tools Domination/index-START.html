@@ -12,35 +12,71 @@
     const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
 
     function makeGreen() {
+      // console.count("makeGreen")
       const p = document.querySelector('p');
       p.style.color = '#BADA55';
       p.style.fontSize = '50px';
     }
-
+    console.log(console)
     // Regular
-
+    console.log("hello");
     // Interpolated
+    console.log("hello I am a %s", "🦊");
 
     // Styled
+    console.log("%cI am a unicorn", "font-size: 50px; color: pink; background-color: #BADA55; ")
 
     // warning!
-
+    console.warn("oopsie-daisy")
     // Error :|
-
+    console.error("Fuck!")
     // Info
-
+    console.info("Humans eat about 8 spiders a year while sleeping")
     // Testing
-
+    //if argument is truthy, second argument will not show
+    console.assert("Olivia rules", "she's a queen")
+    //if first agrument is falsy, second argument will be logged to console
+    console.assert(!"Isa rules", "she's a fox")
     // clearing
-
+    //---> console.clear()
     // Viewing DOM Elements
+    const p = document.querySelector("p")
+    console.log(p) //loggs the element itself to the console
+    console.dir(p) //loggs the elemnts properties to the console
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`)
+      console.log(`This is ${dog.name}`)
+      console.log(`${dog.name} is ${dog.age} years old`)
+      console.groupEnd(`${dog.name}`)
+    })
+    //---collapsed option----
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`)
+      console.log(`This is ${dog.name}`)
+      console.log(`${dog.name} is ${dog.age} years old`)
+      console.groupEnd(`${dog.name}`)
+    })
 
     // counting
+    console.count("Olivia")
+    console.count("Isa")
+    console.count("Olivia")
+    console.count("Olivia")
+    console.count("Isa")
+    console.count("Isa")
+    console.count("Olivia")
+    console.count("Olivia")
+    console.count("Olivia")
 
     // timing
-
+    console.time("timeout time");
+    setTimeout(() => {
+      console.log("timout")
+      console.timeEnd("timeout time")
+    }, 1000)
+    
   </script>
 </body>
 </html>

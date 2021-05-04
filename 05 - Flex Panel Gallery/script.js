@@ -14,12 +14,12 @@ function transition(e) {
 
 allPanel.forEach((panel) => panel.addEventListener("click", onClick));
 
-allPanel.forEach((panel) =>
-	panel.addEventListener("transitionend", transition)
-);
+allPanel.forEach((panel) => panel.addEventListener("transitionend", transition));
+
+
+
+
 function onClick(e){
     allPanel.forEach(panel => panel.classList.remove("open"))
    e.target.classList.add("open")
 }
-
-allPanel.forEach((panel) => panel.addEventListener("transitionend", transition));
